@@ -46,12 +46,7 @@ function RegisterFrom() {
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="Bob Smith"
-                      className="hover:shadow-md"
-                      isErrored={!!form.formState.errors.userName}
-                    />
+                    <Input {...field} placeholder="Bob Smith" isErrored={!!form.formState.errors.userName} />
                   </FormControl>
                   <FormMessage className="text-xs font-medium" />
                 </FormItem>
@@ -68,7 +63,6 @@ function RegisterFrom() {
                       type="email"
                       {...field}
                       placeholder="bob_smith@gmail.com"
-                      className="hover:shadow-md"
                       isErrored={!!form.formState.errors.email}
                     />
                   </FormControl>
@@ -88,7 +82,6 @@ function RegisterFrom() {
                       {...field}
                       placeholder="You password"
                       isErrored={!!form.formState.errors.password}
-                      className="hover:shadow-md"
                     />
                   </FormControl>
                   <FormMessage className="text-xs font-medium" />
@@ -107,7 +100,6 @@ function RegisterFrom() {
                       {...field}
                       isErrored={!!form.formState.errors.confirmPassword}
                       placeholder="Confirm your password"
-                      className="hover:shadow-md"
                     />
                   </FormControl>
                   <FormMessage className="text-xs font-medium" />

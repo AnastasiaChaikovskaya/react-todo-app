@@ -19,8 +19,7 @@ function LoginForm() {
     },
   });
 
-  const hasErrors =
-    !!form.formState.errors.password || !!form.formState.errors.email || !!form.formState.errors.userName;
+  const hasErrors = Object.keys(form.formState.errors).length !== 0;
 
   const handleSubmit = (formData: TLoginFrom) => {
     console.log(formData);
@@ -43,12 +42,7 @@ function LoginForm() {
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="Bob Smith"
-                      className="hover:shadow-md"
-                      isErrored={!!form.formState.errors.userName}
-                    />
+                    <Input {...field} placeholder="Bob Smith" isErrored={!!form.formState.errors.userName} />
                   </FormControl>
                 </FormItem>
               )}
@@ -65,7 +59,6 @@ function LoginForm() {
                       type="email"
                       {...field}
                       placeholder="bob_smith@gmail.com"
-                      className="hover:shadow-md"
                       isErrored={!!form.formState.errors.email}
                     />
                   </FormControl>
@@ -86,7 +79,6 @@ function LoginForm() {
                       {...field}
                       placeholder="You password"
                       isErrored={!!form.formState.errors.password}
-                      className="hover:shadow-md"
                     />
                   </FormControl>
                   <FormMessage className="text-xs font-medium" />
