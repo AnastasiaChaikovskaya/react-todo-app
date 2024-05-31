@@ -26,7 +26,7 @@ function RegisterFrom() {
     !!form.formState.errors.userName;
 
   const handleSubmit = (fromData: TRegisterFrom) => {
-    console.log('submited');
+    console.log(fromData);
   };
 
   return (
@@ -37,7 +37,7 @@ function RegisterFrom() {
       backButtonLabel="Already have account? Login here."
     >
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(() => handleSubmit)} className="space-y-6">
+        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
           <div className="flex flex-col gap-2">
             <FormField
               name="userName"

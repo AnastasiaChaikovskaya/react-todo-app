@@ -14,7 +14,8 @@ interface IWrapperProps {
 const CardWrapper: FC<IWrapperProps> = ({ title, label, backButtonHref, backButtonLabel, children }) => {
   return (
     <Card className="w-full md:w-[400px]">
-      <CardHeader>
+      <CardHeader className="flex flex-col items-center gap-1">
+        <h1 className="text-2xl font-bold md:text-3xl">Welcome to Todo app!</h1>
         <AuthHeader title={title} label={label} />
       </CardHeader>
       <CardContent className="w-full">{children}</CardContent>
