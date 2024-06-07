@@ -7,8 +7,13 @@ import CardWrapper from './CardWrapper';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { TRegisterFrom } from '@/types/registerForm';
+import useUserStore from '@/store/UserStore';
+import { useNavigate } from 'react-router-dom';
 
 function RegisterFrom() {
+  const registerUser = useUserStore((state) => state.registerUser);
+  const isAuth = useUserStore((state) => state.isAuth);
+  const navigate = useNavigate();
   const form = useForm<TRegisterFrom>({
     mode: 'onBlur',
     resolver: zodResolver(RegisterSchema),
@@ -19,14 +24,16 @@ function RegisterFrom() {
       confirmPassword: '',
     },
   });
-  const hasErrors =
-    !!form.formState.errors.confirmPassword ||
-    !!form.formState.errors.password ||
-    !!form.formState.errors.email ||
-    !!form.formState.errors.userName;
+  const hasErrors = Object.keys(form.formState.errors).length !== 0;
 
-  const handleSubmit = (fromData: TRegisterFrom) => {
+  const handleSubmit = async (fromData: TRegisterFrom) => {
+    const { userName, email, password } = fromData;
     console.log(fromData);
+    await registerUser(userName, email, password);
+
+    if (isAuth) {
+      navigate('/todos');
+    }
   };
 
   return (

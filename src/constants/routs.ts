@@ -1,7 +1,7 @@
 export const MAIN_ROUTS = {
-  LOGIN: '/',
+  LOGIN: '/login',
   REGISTER: '/register',
   PROFILE: '/profile',
   TODO: ':todoId',
   TODOS: '/todos',
-} as const
+} as const;
