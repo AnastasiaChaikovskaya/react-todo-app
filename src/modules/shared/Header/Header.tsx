@@ -1,15 +1,11 @@
-import { NotebookIcon } from 'lucide-react';
 import React from 'react';
+import { NotebookIcon } from 'lucide-react';
 import Profile from '@/modules/shared/Profile/Profile';
-import { User } from '@/types/User';
-
-const user1: User = {
-  id: 4,
-  username: 'Knton Gig',
-  email: 'dadad@gamil.com',
-};
+import useUserStore from '@/store/UserStore';
 
 const Header = () => {
+  const user = useUserStore((state) => state.user);
+  console.log(user);
   return (
     <>
       <div className="flex justify-center items-center px-4 lg:max-w-[1024px] lg:mx-auto">
@@ -18,7 +14,7 @@ const Header = () => {
             <NotebookIcon className="h-[26px] w-[26px] text-stone-900" />
             <h1 className="text-xl font-bold leading-none text-stone-900 ">TodoApp</h1>
           </div>
-          <Profile user={user1} />
+          <Profile user={user} />
         </div>
       </div>
       <div className="h-[1px] w-full bg-stone-300"></div>

@@ -1,15 +1,11 @@
 import { User } from './User';
 
-export interface IAuthResponse {
-  accessToken: string;
+export interface ILoginResponse {
+  token: string;
   user: User;
 }
 
 export interface IRegisterResponse {
-  accessToken: string;
-  user: User;
-}
-
-export interface IGetMeResponse {
+  token: string;
   user: User;
 }

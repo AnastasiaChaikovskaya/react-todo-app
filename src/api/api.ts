@@ -19,4 +19,14 @@ axiosInstance.interceptors.request.use(
   },
 );
 
-export const queryClient = new QueryClient();
+// axiosInstance.interceptors.response.use();
+
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: false,
+      staleTime: 15000,
+    },
+  },
+});

@@ -1,12 +1,12 @@
-export const USERS = {
-  GET: '/me',
-  POST: '/auth/register',
+export const USER_ENDPOINTS = {
+  GET_CURRENT_USER: '/me',
 } as const;
 
 export const TODOS = {
   GET: '/todos',
 } as const;
 
-export const LOGIN = {
-  POST: '/auth/login',
-};
+export const AUTH_ENDPOINTS = {
+  LOGIN: '/auth/login',
+  REGISTER: '/auth/register',
+} as const;

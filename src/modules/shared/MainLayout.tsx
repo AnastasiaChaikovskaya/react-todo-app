@@ -1,24 +1,17 @@
-import React, { useEffect } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import React from 'react';
+import { Navigate, Outlet } from 'react-router-dom';
 import Header from './Header/Header';
 import useUserStore from '@/store/UserStore';
+import { MAIN_ROUTS } from '@/constants/routs';
 
 export default function MainLayout() {
-  const getUserAuth = useUserStore((state) => state.getUser);
   const isAuth = useUserStore((state) => state.isAuth);
-  const navigate = useNavigate();
+  const isLoading = useUserStore((state) => state.isLoading);
 
-  const authCheck = async () => {
-    await getUserAuth;
+  if (!isLoading && !isAuth) {
+    return <Navigate replace to={MAIN_ROUTS.LOGIN} />;
+  }
 
-    if (!isAuth) {
-      navigate('/login');
-    }
-  };
-
-  useEffect(() => {
-    authCheck();
-  }, []);
   return (
     <>
       <Header />

@@ -16,7 +16,7 @@ const EditDropDown: FC<IEditDropDown> = ({ todoId }) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <EllipsisVerticalIcon className="text-stone-100 h-[16px] w-[16px]" />
+        <EllipsisVerticalIcon className="text-stone-100 shrink-0 h- w-4" />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem className="flex flex-row gap-2 cursor-pointer">

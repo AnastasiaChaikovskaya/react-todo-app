@@ -9,12 +9,14 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { User } from '@/types/User';
 import { DoorOpen, UserIcon } from 'lucide-react';
+import { useLogOut } from '@/hooks/useLogOut';
 
 interface IProfileDropDown {
   user: User;
 }
 
 const ProfileDropDown: FC<IProfileDropDown> = ({ user }) => {
+  const { logOut } = useLogOut();
   const { username } = user;
 
   return (
@@ -29,9 +31,9 @@ const ProfileDropDown: FC<IProfileDropDown> = ({ user }) => {
           <UserIcon className="w-[16px] h-[16px]" />
           Profile
         </DropdownMenuItem>
-        <DropdownMenuItem className="flex items-center gap-2">
+        <DropdownMenuItem className="flex items-center gap-2" onClick={logOut}>
           <DoorOpen className="w-[16px] h-[16px] text-red-800" />
-          <p className="text-red-800">Exit</p>
+          <p className="text-red-800">Log Out</p>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

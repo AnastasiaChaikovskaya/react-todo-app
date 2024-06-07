@@ -7,13 +7,16 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { TLoginFrom } from '@/types/loginSchema';
 import { LoginSchema } from '@/schema';
+import { useLoginMutation } from '@/quaries/auth';
+import { Loader } from 'lucide-react';
 
 function LoginForm() {
+  const { isPending, mutate } = useLoginMutation();
+
   const form = useForm<TLoginFrom>({
     mode: 'onBlur',
     resolver: zodResolver(LoginSchema),
     defaultValues: {
-      userName: '',
       email: '',
       password: '',
     },
@@ -21,8 +24,8 @@ function LoginForm() {
 
   const hasErrors = Object.keys(form.formState.errors).length !== 0;
 
-  const handleSubmit = (formData: TLoginFrom) => {
-    console.log(formData);
+  const handleSubmit = async (formData: TLoginFrom) => {
+    mutate(formData);
   };
 
   return (
@@ -36,19 +39,6 @@ function LoginForm() {
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
           <div className="flex flex-col gap-2">
             <FormField
-              name="userName"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input {...field} placeholder="Bob Smith" isErrored={!!form.formState.errors.userName} />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-
-            <FormField
               name="email"
               control={form.control}
               render={({ field }) => (
@@ -60,6 +50,7 @@ function LoginForm() {
                       {...field}
                       placeholder="bob_smith@gmail.com"
                       isErrored={!!form.formState.errors.email}
+                      disabled={isPending}
                     />
                   </FormControl>
                   <FormMessage className="text-xs font-medium" />
@@ -79,6 +70,7 @@ function LoginForm() {
                       {...field}
                       placeholder="You password"
                       isErrored={!!form.formState.errors.password}
+                      disabled={isPending}
                     />
                   </FormControl>
                   <FormMessage className="text-xs font-medium" />
@@ -87,8 +79,8 @@ function LoginForm() {
             />
           </div>
 
-          <Button type="submit" className="w-full bg-black hover:bg-stone-900" disabled={hasErrors}>
-            Login
+          <Button type="submit" className="w-full bg-black gap-2 hover:bg-stone-900" disabled={hasErrors || isPending}>
+            {isPending && <Loader className="w-4 h-4 animate-spin" />} Login
           </Button>
         </form>
       </Form>

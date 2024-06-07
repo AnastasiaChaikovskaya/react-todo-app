@@ -19,9 +19,6 @@ export const RegisterSchema = z
   });
 
 export const LoginSchema = z.object({
-  userName: z.string().min(1, {
-    message: 'Please enter your name',
-  }),
   email: z.string().email({
     message: 'Please enter your email',
   }),
