@@ -6,7 +6,7 @@ const todo = {
   todoId: 1,
   userId: 1,
   todoTitle: 'Todo 1',
-  todoDescription: 'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh',
+  todoDescription: 'hhhh',
   completed: true,
   overdue: false,
   hasReminder: false,

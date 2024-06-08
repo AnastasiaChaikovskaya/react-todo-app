@@ -7,18 +7,16 @@ import CardWrapper from './CardWrapper';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { TRegisterFrom } from '@/types/registerForm';
-import useUserStore from '@/store/UserStore';
-import { useNavigate } from 'react-router-dom';
+import { useRegisterMutation } from '@/quaries/auth';
+import { Loader } from 'lucide-react';
 
 function RegisterFrom() {
-  const registerUser = useUserStore((state) => state.registerUser);
-  const isAuth = useUserStore((state) => state.isAuth);
-  const navigate = useNavigate();
+  const { isPending, mutate } = useRegisterMutation();
   const form = useForm<TRegisterFrom>({
     mode: 'onBlur',
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
-      userName: '',
+      username: '',
       email: '',
       password: '',
       confirmPassword: '',
@@ -26,14 +24,9 @@ function RegisterFrom() {
   });
   const hasErrors = Object.keys(form.formState.errors).length !== 0;
 
-  const handleSubmit = async (fromData: TRegisterFrom) => {
-    const { userName, email, password } = fromData;
-    console.log(fromData);
-    await registerUser(userName, email, password);
-
-    if (isAuth) {
-      navigate('/todos');
-    }
+  const handleSubmit = async (formData: TRegisterFrom) => {
+    const { username, email, password } = formData;
+    mutate({ username, email, password });
   };
 
   return (
@@ -47,13 +40,18 @@ function RegisterFrom() {
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
           <div className="flex flex-col gap-2">
             <FormField
-              name="userName"
+              name="username"
               control={form.control}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="Bob Smith" isErrored={!!form.formState.errors.userName} />
+                    <Input
+                      {...field}
+                      disabled={isPending}
+                      placeholder="Bob Smith"
+                      isErrored={!!form.formState.errors.username}
+                    />
                   </FormControl>
                   <FormMessage className="text-xs font-medium" />
                 </FormItem>
@@ -69,6 +67,7 @@ function RegisterFrom() {
                     <Input
                       type="email"
                       {...field}
+                      disabled={isPending}
                       placeholder="bob_smith@gmail.com"
                       isErrored={!!form.formState.errors.email}
                     />
@@ -87,6 +86,7 @@ function RegisterFrom() {
                     <Input
                       type="password"
                       {...field}
+                      disabled={isPending}
                       placeholder="You password"
                       isErrored={!!form.formState.errors.password}
                     />
@@ -105,6 +105,7 @@ function RegisterFrom() {
                     <Input
                       type="password"
                       {...field}
+                      disabled={isPending}
                       isErrored={!!form.formState.errors.confirmPassword}
                       placeholder="Confirm your password"
                     />
@@ -114,8 +115,8 @@ function RegisterFrom() {
               )}
             />
           </div>
-          <Button type="submit" className="w-full bg-black hover:bg-stone-900" disabled={hasErrors}>
-            Sign in
+          <Button type="submit" className="w-full bg-black hover:bg-stone-900" disabled={hasErrors || isPending}>
+            {isPending && <Loader className="w-4 h-4 animate-spin" />} Sign in
           </Button>
         </form>
       </Form>
