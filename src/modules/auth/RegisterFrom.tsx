@@ -16,7 +16,8 @@ function RegisterFrom() {
     mode: 'onBlur',
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
-      username: '',
+      firstName: '',
+      lastName: '',
       email: '',
       password: '',
       confirmPassword: '',
@@ -25,8 +26,8 @@ function RegisterFrom() {
   const hasErrors = Object.keys(form.formState.errors).length !== 0;
 
   const handleSubmit = async (formData: TRegisterFrom) => {
-    const { username, email, password } = formData;
-    mutate({ username, email, password });
+    const { firstName, lastName, email, password } = formData;
+    mutate({ firstName, lastName, email, password });
   };
 
   return (
@@ -40,23 +41,43 @@ function RegisterFrom() {
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
           <div className="flex flex-col gap-2">
             <FormField
-              name="username"
+              name="firstName"
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>First Name</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
                       disabled={isPending}
                       placeholder="Bob Smith"
-                      isErrored={!!form.formState.errors.username}
+                      isErrored={!!form.formState.errors.firstName}
                     />
                   </FormControl>
                   <FormMessage className="text-xs font-medium" />
                 </FormItem>
               )}
             />
+
+            <FormField
+              name="lastName"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Last Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      disabled={isPending}
+                      placeholder="Bob Smith"
+                      isErrored={!!form.formState.errors.lastName}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-xs font-medium" />
+                </FormItem>
+              )}
+            />
+
             <FormField
               name="email"
               control={form.control}
@@ -76,6 +97,7 @@ function RegisterFrom() {
                 </FormItem>
               )}
             />
+
             <FormField
               name="password"
               control={form.control}
@@ -95,6 +117,7 @@ function RegisterFrom() {
                 </FormItem>
               )}
             />
+
             <FormField
               name="confirmPassword"
               control={form.control}

@@ -17,12 +17,17 @@ interface IProfileDropDown {
 
 const ProfileDropDown: FC<IProfileDropDown> = ({ user }) => {
   const { logOut } = useLogOut();
-  const { username } = user;
+  const { lastName, firstName } = user;
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="flex justify-center items-center rounded-full bg-blue-900 h-[26px] w-[26px] hover:scale-125 duration-300">
-        <span className="text-stone-100 font-bold text-base leading-none">{username[0]}</span>
+      <DropdownMenuTrigger className="flex justify-center items-center">
+        <div className="flex gap-3 items-center">
+          <h3 className="text-stone-900 font-semibold leading-none">{`${firstName} ${lastName}`}</h3>
+          <div className=" flex justify-center items-center bg-blue-800 h-8 w-8 rounded-full">
+            <span className="text-stone-100 font-bold text-base leading-none">{`${firstName[0]}${lastName[0]}`}</span>
+          </div>
+        </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuLabel>My Account</DropdownMenuLabel>

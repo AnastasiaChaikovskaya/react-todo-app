@@ -39,10 +39,6 @@ const routs = createBrowserRouter([
         path: MAIN_ROUTS.TODOS,
         element: <TodosPage />,
       },
-      {
-        path: MAIN_ROUTS.TODO,
-        element: <TodosPage />,
-      },
     ],
   },
 ]);
@@ -56,7 +52,11 @@ function App() {
       </div>
     );
   }
-  return <RouterProvider router={routs} />;
+  return (
+    <>
+      <RouterProvider router={routs} />
+    </>
+  );
 }
 
 export default App;

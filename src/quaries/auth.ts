@@ -18,7 +18,7 @@ export const useLoginMutation = () => {
     mutationFn: login,
     onSuccess: (responseData) => {
       setUser(responseData.user);
-      localStorage.setItem('token', responseData.token);
+      localStorage.setItem('token', responseData.accessToken);
       setAuth(true);
       navigate(MAIN_ROUTS.TODOS);
     },
@@ -36,16 +36,18 @@ export const useRegisterMutation = () => {
   const navigate = useNavigate();
 
   const setAuth = useUserStore((state) => state.setAuth);
-  const setUser = useUserStore((state) => state.setUser);
 
   return useMutation({
     mutationKey: [AUTH_QUERY_KEYS.REGISTER],
     mutationFn: register,
     onSuccess: (responseData) => {
-      setUser(responseData.user);
-      localStorage.setItem('token', responseData.token);
+      localStorage.setItem('token', responseData.accessToken);
       setAuth(true);
-      navigate(MAIN_ROUTS.TODOS);
+      navigate(MAIN_ROUTS.LOGIN);
+      toast({
+        title: 'Register success',
+        description: 'Now login with your credentials',
+      });
     },
     onError: () => {
       toast({

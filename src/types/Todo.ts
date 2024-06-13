@@ -1,10 +1,14 @@
 export interface ITodo {
-  todoId: number;
-  userId: number;
-  todoTitle: string;
-  todoDescription: string;
-  completed: boolean;
-  overdue: boolean;
-  hasReminder: boolean;
-  scheduledTime: string | null;
+  _id: number;
+  title: string;
+  description: string;
+  status: 'active' | 'completed';
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ITodosResponse {
+  id: number;
+  username: string;
+  todos: ITodo[];
 }

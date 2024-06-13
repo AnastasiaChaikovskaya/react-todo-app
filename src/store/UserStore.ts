@@ -13,8 +13,8 @@ interface IUserState {
 
 const initState = {
   user: {
-    id: 0,
-    username: '',
+    firstName: '',
+    lastName: '',
     email: '',
   },
   isAuth: false,

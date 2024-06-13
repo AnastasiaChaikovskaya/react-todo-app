@@ -8,7 +8,12 @@ export const login = async (requestData: { email: string; password: string }) =>
   return response.data;
 };
 
-export const register = async (requestData: { username: string; email: string; password: string }) => {
+export const register = async (requestData: {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+}) => {
   const response = await axiosInstance.post<IRegisterResponse>(AUTH_ENDPOINTS.REGISTER, requestData);
   return response.data;
 };

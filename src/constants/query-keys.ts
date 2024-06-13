@@ -6,3 +6,9 @@ export const AUTH_QUERY_KEYS = {
   LOGIN: 'login',
   REGISTER: 'register',
 };
+
+export const TODOS_QUERY_KEY = {
+  ALL_TODOS: 'all-todos',
+  GET_SINGLE_TODO: 'todo',
+  POST_TODO: 'add-todo',
+};

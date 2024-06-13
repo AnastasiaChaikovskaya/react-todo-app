@@ -15,7 +15,7 @@ export default function MainLayout() {
   return (
     <>
       <Header />
-      <div className="flex justify-center items-center px-4 lg:max-w-[1024px] lg:mx-auto">
+      <div className="flex justify-center items-center mt-[40px] px-4 pb-6 lg:max-w-[1024px] lg:mx-auto lg:mt-[60px]">
         <Outlet />
       </div>
     </>
