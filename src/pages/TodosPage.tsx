@@ -35,8 +35,8 @@ function TodosPage() {
   return (
     <div>
       <div className="flex flex-row gap-2 items-center">
-        <h1 className="text-xl md:text-5xl text-stone-950 font-bold">Your tasks!</h1>
-        <SquareCheckBig className="h-10 w-10 text-stone-950" />
+        <h1 className="text-2xl md:text-5xl text-stone-950 font-bold">Your tasks!</h1>
+        <SquareCheckBig className="h-6 w-6 text-stone-950 md:h-10 md:w-10" />
       </div>
       <div className="flex flex-col items-center gap-3 pt-11 w-full md:flex-row md:flex-wrap md:items-start md:justify-center m-auto">
         <AddTodoModal

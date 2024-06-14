@@ -22,7 +22,7 @@ const ProfileDropDown: FC<IProfileDropDown> = ({ user }) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="flex justify-center items-center">
-        <div className="flex gap-3 items-center">
+        <div className="flex gap-1 items-center md:gap-3">
           <h3 className="text-stone-900 font-semibold leading-none">{`${firstName} ${lastName}`}</h3>
           <div className=" flex justify-center items-center bg-blue-800 h-8 w-8 rounded-full">
             <span className="text-stone-100 font-bold text-base leading-none">{`${firstName[0]}${lastName[0]}`}</span>

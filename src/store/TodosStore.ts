@@ -9,6 +9,8 @@ interface ITodosStore {
   setTodos: (todos: ITodo[]) => void;
   setTodo: (todo: ITodo) => void;
   addTodo: (todo: ITodo) => void;
+  deleteTodoById: (todoId: number) => void;
+  changeTodo: (todo: ITodo) => void;
 }
 
 const initState = {
@@ -23,6 +25,21 @@ const useTodosStore = create<ITodosStore>((set) => ({
   setTodo: (todo: ITodo) => set((state) => ({ ...state, currentTodo: todo })),
   setLoading: (isLoading: boolean) => set((state) => ({ ...state, isLoading: isLoading })),
   addTodo: (todo: ITodo) => set((state) => ({ ...state, todos: [...state.todos, todo] })),
+  deleteTodoById: (id: number) =>
+    set((state) => ({
+      ...state,
+      todos: state.todos.filter((todo) => todo._id !== id),
+    })),
+  changeTodo: (todoChange: ITodo) =>
+    set((state) => ({
+      ...state,
+      todos: state.todos.map((todo) => {
+        if (todoChange._id === todo._id) {
+          return todoChange;
+        }
+        return todo;
+      }),
+    })),
 }));
 
 export default useTodosStore;

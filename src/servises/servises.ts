@@ -18,3 +18,13 @@ export const postTodo = async (requestData: { title: string; description: string
   const response = await axiosInstance.post(TODO_ENDPOINTS.POST_TODO, requestData);
   return response.data;
 };
+
+export const deleteTodo = async (todoId: number) => {
+  const response = await axiosInstance.delete(`${TODO_ENDPOINTS.DELETE_TODO}/${todoId}`);
+  return response.data;
+};
+
+export const changeTodo = async (todoId: number): Promise<ITodo> => {
+  const response = await axiosInstance.patch(`${TODO_ENDPOINTS.CHANGE_TODO}/${todoId}`);
+  return response.data;
+};

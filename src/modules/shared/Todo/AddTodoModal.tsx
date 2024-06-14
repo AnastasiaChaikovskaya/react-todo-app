@@ -16,7 +16,7 @@ import { AddTodoSchema } from '@/schema';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { useTodoMutation } from '@/quaries/todos';
+import { useTodoMutation } from '@/quaries/post-todo';
 import { Loader } from 'lucide-react';
 
 interface IAddTodoTitle {
@@ -35,7 +35,6 @@ const AddTodoModal: FC<IAddTodoTitle> = ({ trigger }) => {
   });
 
   const handleSubmit = (formData: TAddTodoForm) => {
-    console.log(formData);
     mutate(formData, {
       onSuccess: () => {
         form.reset({

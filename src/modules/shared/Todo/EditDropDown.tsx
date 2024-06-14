@@ -8,6 +8,7 @@ import {
 import { EllipsisIcon, EllipsisVerticalIcon, PencilIcon, TrashIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import MoreInfoModal from './MoreInfoModal/MoreInfoModal';
+import DeleteModal from './DeleteModal';
 
 interface IEditDropDownProps {
   todoId: number;
@@ -28,8 +29,15 @@ const EditDropDown: FC<IEditDropDownProps> = ({ todoId }) => {
           <EllipsisIcon className="h-[12px] w-[12px]" />
           <MoreInfoModal todoId={todoId} trigger={<Link to={'/todos'}>More info</Link>} />
         </DropdownMenuItem>
-        <DropdownMenuItem className="flex flex-row gap-2 cursor-pointer">
-          <TrashIcon className="h-[12px] w-[12px] text-red-900" /> <p className="text-red-900">Delete</p>
+        <DropdownMenuItem>
+          <DeleteModal
+            trigger={
+              <Link to={'/todos'} className="flex flex-row gap-2 cursor-pointer">
+                <TrashIcon className="h-[12px] w-[12px] text-red-900" /> <p className="text-red-900">Delete</p>
+              </Link>
+            }
+            id={todoId}
+          />
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

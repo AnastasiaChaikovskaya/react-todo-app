@@ -38,3 +38,13 @@ export const AddTodoSchema = z.object({
     message: 'title must be at least 1 characters long',
   }),
 });
+
+export const EditTodoSchema = z.object({
+  title: z.string().min(1, {
+    message: 'title must be at least 1 characters long',
+  }),
+  description: z.string().min(1, {
+    message: 'title must be at least 1 characters long',
+  }),
+  completed: z.boolean(),
+});

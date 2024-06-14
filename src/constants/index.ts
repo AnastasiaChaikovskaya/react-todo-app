@@ -6,6 +6,8 @@ export const TODO_ENDPOINTS = {
   GET_TODOS: '/todos',
   GET_TODO: '/todo',
   POST_TODO: '/todo',
+  DELETE_TODO: '/todo',
+  CHANGE_TODO: '/todo',
 } as const;
 
 export const AUTH_ENDPOINTS = {
