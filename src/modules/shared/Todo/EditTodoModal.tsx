@@ -8,7 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { ITodo } from '@/types/Todo';
+import { ITodo, TUpdateTodoRequestData } from '@/types/Todo';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -17,6 +17,9 @@ import { TEditTodoForm } from '@/types/EditTodoForm';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { getTodoStatus } from '@/helpers/getTodoStatus';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Button } from '@/components/ui/button';
+import { useEditTodoMutation } from '@/quaries/edit-todo';
 
 interface IEditTodoModalProps {
   trigger: ReactNode;
@@ -24,17 +27,27 @@ interface IEditTodoModalProps {
 }
 
 const EditTodoModal: FC<IEditTodoModalProps> = ({ trigger, todo }) => {
+  const { isPending, mutate } = useEditTodoMutation();
   const form = useForm<TEditTodoForm>({
     mode: 'onBlur',
     resolver: zodResolver(EditTodoSchema),
     defaultValues: {
       title: todo.title,
       description: todo.description,
-      completed: getTodoStatus(todo.status),
+      status: getTodoStatus(todo.status),
     },
   });
+  const hasError = Object.keys(form.formState.errors).length !== 0;
 
-  const handleSumit = (formData: TEditTodoForm) => {};
+  const handleSubmit = (formData: TEditTodoForm) => {
+    const requestObject: TUpdateTodoRequestData = {
+      ...formData,
+      _id: todo._id,
+      status: formData.status ? 'completed' : 'active',
+    };
+    mutate(requestObject);
+    console.log(requestObject);
+  };
 
   return (
     <Dialog>
@@ -44,7 +57,7 @@ const EditTodoModal: FC<IEditTodoModalProps> = ({ trigger, todo }) => {
           <DialogTitle>Edit Todo</DialogTitle>
         </DialogHeader>
         <Form {...form}>
-          <form>
+          <form onSubmit={form.handleSubmit(handleSubmit)}>
             <FormField
               name="title"
               control={form.control}
@@ -52,7 +65,7 @@ const EditTodoModal: FC<IEditTodoModalProps> = ({ trigger, todo }) => {
                 <FormItem>
                   <FormLabel>Title</FormLabel>
                   <FormControl>
-                    <Input {...field} isErrored={!!form.formState.errors.title} />
+                    <Input {...field} isErrored={!!form.formState.errors.title} disabled={isPending} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -66,25 +79,36 @@ const EditTodoModal: FC<IEditTodoModalProps> = ({ trigger, todo }) => {
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Textarea {...field} />
+                    <Textarea {...field} disabled={isPending} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <FormField
-              name="completed"
+              name="status"
               control={form.control}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Status</FormLabel>
                   <FormControl>
-                    <input type="checkbox" checked={field.value} onChange={(e) => field.onChange(e.target.checked)} />
+                    <div className="flex gap-2 items-center">
+                      <Checkbox checked={field.value} onCheckedChange={field.onChange} disabled={isPending} />
+                      <p>{field.value ? 'Done' : 'In process'}</p>
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button>Clean</Button>
+              </DialogClose>
+              <Button type="submit" disabled={hasError || isPending}>
+                Submit
+              </Button>
+            </DialogFooter>
           </form>
         </Form>
       </DialogContent>

@@ -1,6 +1,6 @@
 import { axiosInstance } from '@/api/api';
 import { TODO_ENDPOINTS } from '@/constants';
-import { ITodo } from '@/types/Todo';
+import { ITodo, TUpdateTodoRequestData } from '@/types/Todo';
 
 export const getTodos = async (): Promise<ITodo[]> => {
   const response = await axiosInstance.get(TODO_ENDPOINTS.GET_TODOS);
@@ -24,7 +24,7 @@ export const deleteTodo = async (todoId: number) => {
   return response.data;
 };
 
-export const changeTodo = async (todoId: number): Promise<ITodo> => {
-  const response = await axiosInstance.patch(`${TODO_ENDPOINTS.CHANGE_TODO}/${todoId}`);
+export const changeTodo = async (todo: TUpdateTodoRequestData): Promise<ITodo> => {
+  const response = await axiosInstance.patch(`${TODO_ENDPOINTS.CHANGE_TODO}/${todo._id}`);
   return response.data;
 };

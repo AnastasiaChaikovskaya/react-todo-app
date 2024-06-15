@@ -15,7 +15,7 @@ const Todo: FC<ITodoProps> = ({ todo }) => {
     <Card className=" flex flex-col max-w-[300px] min-h-[300px] min-w-[300px] max-h[300px] overflow-hidden shadow-md">
       <CardHeader className="flex flex-row items-center justify-between bg-stone-900 rounded-t-lg">
         <h2 className={cn('text-xl text-stone-100 md:text-2xl truncate')}>{title}</h2>
-        <EditDropDown todoId={todo._id} />
+        <EditDropDown todo={todo} />
       </CardHeader>
       <CardContent className="py-4 flex-1">
         <p className="text-stone-950 text-sm md:text-base break-words line-clamp-6">{description}</p>

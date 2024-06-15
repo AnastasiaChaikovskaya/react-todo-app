@@ -12,3 +12,5 @@ export interface ITodosResponse {
   username: string;
   todos: ITodo[];
 }
+
+export type TUpdateTodoRequestData = Omit<ITodo, 'createdAt' | 'updatedAt'>;

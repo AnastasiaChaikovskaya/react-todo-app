@@ -46,5 +46,5 @@ export const EditTodoSchema = z.object({
   description: z.string().min(1, {
     message: 'title must be at least 1 characters long',
   }),
-  completed: z.boolean(),
+  status: z.boolean(),
 });
