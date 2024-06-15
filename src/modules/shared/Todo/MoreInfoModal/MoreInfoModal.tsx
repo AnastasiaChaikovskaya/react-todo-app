@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useTodo } from '@/hooks/useTodo';
 import useTodosStore from '@/store/TodosStore';
 import {
@@ -8,47 +8,106 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
 import { reformatDate } from '@/helpers/formatData';
-import { ITodo } from '@/types/Todo';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useModal } from '@/hooks/useModal';
+import { Separator } from '@radix-ui/react-dropdown-menu';
+import { Button } from '@/components/ui/button';
+import { CopyCheck, Loader } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { useEditTodoMutation } from '@/quaries/edit-todo';
+import { queryClient } from '@/api/api';
+import { TODOS_QUERY_KEY } from '@/constants/query-keys';
 
-interface IMoreInfoModal {
-  trigger: ReactNode;
-  todoId: number;
-}
+const MoreInfoModal = () => {
+  const { isOpen, toggleModal } = useModal('more-info');
 
-const MoreInfoModal: FC<IMoreInfoModal> = ({ trigger, todoId }) => {
-  const { isLoading } = useTodo(todoId);
-  const todo = useTodosStore((state) => state.currentTodo) as ITodo;
+  const setTodo = useTodosStore((state) => state.setTodo);
+  const storeTodo = useTodosStore((state) => state.currentTodo);
 
-  const createAt = todo ? reformatDate(todo.createdAt) : '2024-06-12T17:52:50.286Z';
-  const updateAt = todo ? reformatDate(todo.updatedAt) : '2024-06-12T17:52:50.286Z';
+  const { isLoading, data } = useTodo(storeTodo?._id as number);
+  const { isPending, mutate } = useEditTodoMutation();
+
+  const isToDoActive = useMemo(() => data && data.status === 'active', [data]);
+  const isToDoCompleted = useMemo(() => data && data.status === 'completed', [data]);
+
+  const handleUpdateTodoStatus = useCallback(() => {
+    if (!data?._id) return;
+    const updatedTodoStatus = isToDoActive ? 'completed' : 'active';
+    mutate(
+      { _id: data._id, status: updatedTodoStatus },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: [TODOS_QUERY_KEY.GET_SINGLE_TODO, data._id] });
+          queryClient.invalidateQueries({ queryKey: [TODOS_QUERY_KEY.ALL_TODOS] });
+        },
+      },
+    );
+  }, [data, mutate]);
+
+  const handleToggleModal = useCallback(() => {
+    setTodo(null);
+    toggleModal(!isOpen);
+  }, [isOpen, setTodo, toggleModal]);
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>{trigger}</DialogTrigger>
-      {!isLoading && (
-        <DialogContent className="rounded-md">
-          <DialogHeader>
-            <DialogTitle>{todo?.title}</DialogTitle>
-          </DialogHeader>
-          <DialogDescription>{todo?.description}</DialogDescription>
-          <DialogFooter>
-            <div className="flex flex-row w-full justify-between items-center">
-              <div className="flex gap-2 items-center">
-                <Input type="checkbox" className="h-4 w-4" />
-                {todo?.status === 'active' ? <p className="text-xs">In process</p> : <p className="text-xs">Done</p>}
+    <Dialog open={isOpen} onOpenChange={handleToggleModal}>
+      <DialogContent className="rounded-md">
+        <DialogHeader>
+          {isLoading && !data && <Skeleton className="h-[20px] w-[300px] bg-stone-300" />}
+          {data && !isLoading && <DialogTitle>{data.title}</DialogTitle>}
+        </DialogHeader>
+        <Separator className="bg-stone-300 h-[1px]" />
+        {isLoading && !data && (
+          <div className="flex flex-col gap-2">
+            {Array.from({ length: 5 }).map((_, index) => (
+              <Skeleton key={index} className="h-[20px] w-full bg-stone-300" />
+            ))}
+          </div>
+        )}
+        {data && !isLoading && <DialogDescription>{data.description}</DialogDescription>}
+        <Separator className="bg-stone-300 h-[1px]" />
+        {isLoading && !data && (
+          <div className="flex items-end justify-between">
+            <Skeleton className="w-32 h-8 bg-stone-300" />
+            <div className="flex items-center gap-4">
+              <Skeleton className="w-[120px] h-4 bg-stone-300" />
+              <Skeleton className="w-[120px] h-4 bg-stone-300" />
+            </div>
+          </div>
+        )}
+        {data && !isLoading && (
+          <DialogFooter className="flex items-end justify-between">
+            <div className="w-full">
+              {(isToDoActive || isToDoCompleted) && (
+                <Button
+                  variant="ghost"
+                  onClick={handleUpdateTodoStatus}
+                  disabled={isPending}
+                  className={cn(
+                    'text-sm gap-2',
+                    isToDoActive && 'bg-green-600 hover:bg-green-600/80',
+                    isToDoCompleted && 'bg-orange-300 hover:bg-orange-300/80',
+                  )}
+                >
+                  {isPending ? <Loader className="w-4 h-4 animate-spin" /> : <CopyCheck className="w-4 h-4" />}
+
+                  {data.status === 'active' ? 'Mark as completed' : 'Mark as active'}
+                </Button>
+              )}
+            </div>
+            <div className="flex flex-col items-start gap-1 shrink-0">
+              <div className="flex items-center gap-1 text-stone-400">
+                <span className="text-[12px]">Create At: {reformatDate(data.createdAt)}</span>
               </div>
-              <div className="flex flex-col gap-1 items-end">
-                <p className="text-xs">{`Crate at: ${createAt}`}</p>
-                <p className="text-xs">{`Update at: ${updateAt}`}</p>
+              <div className="flex items-center gap-1 text-stone-400">
+                <span className="text-[12px]">Updated At: {reformatDate(data.updatedAt)}</span>
               </div>
             </div>
           </DialogFooter>
-        </DialogContent>
-      )}
+        )}
+      </DialogContent>
     </Dialog>
   );
 };

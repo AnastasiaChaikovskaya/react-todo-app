@@ -7,7 +7,7 @@ interface ITodosStore {
   isLoading: boolean;
   setLoading: (isLoading: boolean) => void;
   setTodos: (todos: ITodo[]) => void;
-  setTodo: (todo: ITodo) => void;
+  setTodo: (todo: ITodo | null) => void;
   addTodo: (todo: ITodo) => void;
   deleteTodoById: (todoId: number) => void;
   changeTodo: (todo: ITodo) => void;
@@ -22,7 +22,7 @@ const initState = {
 const useTodosStore = create<ITodosStore>((set) => ({
   ...initState,
   setTodos: (todos: ITodo[]) => set((state) => ({ ...state, todos: todos })),
-  setTodo: (todo: ITodo) => set((state) => ({ ...state, currentTodo: todo })),
+  setTodo: (todo: ITodo | null) => set((state) => ({ ...state, currentTodo: todo })),
   setLoading: (isLoading: boolean) => set((state) => ({ ...state, isLoading: isLoading })),
   addTodo: (todo: ITodo) => set((state) => ({ ...state, todos: [...state.todos, todo] })),
   deleteTodoById: (id: number) =>

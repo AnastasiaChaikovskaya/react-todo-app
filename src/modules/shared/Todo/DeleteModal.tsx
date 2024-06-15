@@ -1,44 +1,53 @@
-import React, { FC, ReactNode } from 'react';
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
+import React, { useCallback } from 'react';
+import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { DialogDescription } from '@radix-ui/react-dialog';
 import { Button } from '@/components/ui/button';
 import { useDeleteTodoMutation } from '@/quaries/delete-todo';
 import { Loader } from 'lucide-react';
+import { useModal } from '@/hooks/useModal';
+import useTodosStore from '@/store/TodosStore';
 
-interface IDeleteModalProps {
-  trigger: ReactNode;
-  id: number;
-}
+const DeleteModal = () => {
+  const { isOpen, toggleModal } = useModal('delete-to-do');
 
-const DeleteModal: FC<IDeleteModalProps> = ({ trigger, id }) => {
-  const { mutate, isPending } = useDeleteTodoMutation(id);
+  const storeTodo = useTodosStore((store) => store.currentTodo);
+  const setTodo = useTodosStore((store) => store.setTodo);
 
-  const handleDeleteTodo = (todoId: number) => {
-    mutate(todoId);
+  const { mutate, isPending } = useDeleteTodoMutation();
+
+  const handleToggleModal = useCallback(() => {
+    setTodo(null);
+    toggleModal(!isOpen);
+  }, [isOpen, setTodo, toggleModal]);
+
+  const handleDeleteTodo = () => {
+    if (!storeTodo?._id) return;
+    mutate(storeTodo._id, {
+      onSuccess: () => {
+        handleToggleModal();
+      },
+    });
   };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>{trigger}</DialogTrigger>
+    <Dialog open={isOpen} onOpenChange={toggleModal}>
       <DialogContent className="rounded-md">
         <DialogHeader>
           <DialogTitle>Delete Todo</DialogTitle>
         </DialogHeader>
-        <DialogDescription>Are you sure you want to delete a task?</DialogDescription>
+        <DialogDescription>
+          Do you want to delete <span className="font-semibold">{storeTodo?.title}</span>? This action is permanent.
+          Proceed?
+        </DialogDescription>
         <DialogFooter>
           <DialogClose asChild>
-            <Button className="bg-red-800">No</Button>
+            <Button variant="ghost" onClick={handleToggleModal}>
+              Cancel
+            </Button>
           </DialogClose>
-          <Button onClick={() => handleDeleteTodo(id)} className="gap-2">
-            {isPending && <Loader className="h-4 w-4" />}Yes
+          <Button onClick={handleDeleteTodo} className="gap-2 bg-red-800 hover:bg-red-800/80" disabled={isPending}>
+            {isPending && <Loader className="w-4 h-4 animate-spin" />}
+            Yes, delete
           </Button>
         </DialogFooter>
       </DialogContent>

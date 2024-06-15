@@ -29,7 +29,7 @@ export const useTodos = () => {
         description: 'There was a problem with your request.',
       });
     }
-  }, [isError, isSuccess, setTodos, setLoading, data]);
+  }, [isError, isSuccess, setTodos, setLoading, data, toast]);
 
   return { isLoading };
 };

@@ -1,23 +1,19 @@
 import { useToast } from '@/components/ui/use-toast';
 import { TODOS_QUERY_KEY } from '@/constants/query-keys';
 import { getTodo } from '@/servises/servises';
-import useTodosStore from '@/store/TodosStore';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
 export const useTodo = (todoId: number) => {
-  const setCurrentTodo = useTodosStore((state) => state.setTodo);
   const { toast } = useToast();
-  const { isSuccess, isError, isLoading, data } = useQuery({
+  const { isError, isLoading, data } = useQuery({
     queryKey: [TODOS_QUERY_KEY.GET_SINGLE_TODO, todoId],
     queryFn: () => getTodo(todoId),
+    enabled: !!todoId,
+    staleTime: 0,
   });
 
   useEffect(() => {
-    if (isSuccess) {
-      setCurrentTodo(data);
-    }
-
     if (isError) {
       toast({
         variant: 'destructive',
@@ -25,7 +21,7 @@ export const useTodo = (todoId: number) => {
         description: 'Something went wrong',
       });
     }
-  }, [isSuccess, isError, data, setCurrentTodo]);
+  }, [isError]);
 
-  return { isLoading };
+  return { isLoading, data };
 };

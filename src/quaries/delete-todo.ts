@@ -1,18 +1,17 @@
+import { queryClient } from '@/api/api';
 import { useToast } from '@/components/ui/use-toast';
 import { TODOS_QUERY_KEY } from '@/constants/query-keys';
 import { deleteTodo } from '@/servises/servises';
-import useTodosStore from '@/store/TodosStore';
 import { useMutation } from '@tanstack/react-query';
 
-export const useDeleteTodoMutation = (id: number) => {
-  const deleteTodoById = useTodosStore((state) => state.deleteTodoById);
+export const useDeleteTodoMutation = () => {
   const { toast } = useToast();
 
   return useMutation({
-    mutationKey: [TODOS_QUERY_KEY.DELETE_TODO, id],
+    mutationKey: [TODOS_QUERY_KEY.DELETE_TODO],
     mutationFn: deleteTodo,
     onSuccess: () => {
-      deleteTodoById(id);
+      queryClient.invalidateQueries({ queryKey: [TODOS_QUERY_KEY.ALL_TODOS] });
       toast({
         title: 'Success',
         description: 'Your todo deleted',

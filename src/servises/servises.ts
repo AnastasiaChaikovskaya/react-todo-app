@@ -20,11 +20,10 @@ export const postTodo = async (requestData: { title: string; description: string
 };
 
 export const deleteTodo = async (todoId: number) => {
-  const response = await axiosInstance.delete(`${TODO_ENDPOINTS.DELETE_TODO}/${todoId}`);
-  return response.data;
+  await axiosInstance.delete<void>(`${TODO_ENDPOINTS.DELETE_TODO}/${todoId}`);
 };
 
 export const changeTodo = async (todo: TUpdateTodoRequestData): Promise<ITodo> => {
-  const response = await axiosInstance.patch(`${TODO_ENDPOINTS.CHANGE_TODO}/${todo._id}`);
+  const response = await axiosInstance.patch(`${TODO_ENDPOINTS.CHANGE_TODO}/${todo._id}`, todo);
   return response.data;
 };

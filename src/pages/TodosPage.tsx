@@ -2,13 +2,26 @@ import React from 'react';
 import { useTodos } from '@/hooks/useTodos';
 import Todo from '@/modules/shared/Todo/Todo';
 import useTodosStore from '@/store/TodosStore';
-import { Loader, PlusIcon, SquareCheckBig } from 'lucide-react';
+import { Frown, Loader, PlusIcon, SquareCheckBig } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import AddTodoModal from '@/modules/shared/Todo/AddTodoModal';
+import { useModal } from '@/hooks/useModal';
+import { AddToDoButton } from '@/modules/shared/Todo/AddTodoButton';
+import EditTodoModal from '@/modules/shared/Todo/EditTodoModal';
+import DeleteModal from '@/modules/shared/Todo/DeleteModal';
+import MoreInfoModal from '@/modules/shared/Todo/MoreInfoModal/MoreInfoModal';
 
 function TodosPage() {
+  const { isOpen, openModal } = useModal('add-to-do');
+  const { isOpen: isEditOpen } = useModal('edit-to-do');
+  const { isOpen: isDeleteOpen } = useModal('delete-to-do');
+  const { isOpen: isMoreInfoOpen } = useModal('more-info');
+
   const { isLoading } = useTodos();
-  const todos = useTodosStore((store) => store.todos);
+
+  const toDoList = useTodosStore((store) => store.todos);
+
+  const hasTodos = toDoList.length > 0;
 
   if (isLoading) {
     return (
@@ -18,39 +31,31 @@ function TodosPage() {
     );
   }
 
-  if (todos.length === 0) {
-    return (
-      <div className="flex flex-col">
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-col items-center">
-            <h1 className="text-3xl font-bold">You don't have any tasks now</h1>
-            <h2 className="text-xl font-normal">You can add them!</h2>
-          </div>
-          <AddTodoModal trigger={<Button variant={'default'}>Add your first todo</Button>} />
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div>
-      <div className="flex flex-row gap-2 items-center">
-        <h1 className="text-2xl md:text-5xl text-stone-950 font-bold">Your tasks!</h1>
-        <SquareCheckBig className="h-6 w-6 text-stone-950 md:h-10 md:w-10" />
+    <>
+      <div className="flex gap-2 items-center">
+        <SquareCheckBig className=" relative top-1 h-6 w-6 text-stone-950 md:h-10 md:w-10" />
+        <h1 className="text-2xl md:text-5xl text-stone-950 font-bold">Your tasks</h1>
       </div>
-      <div className="flex flex-col items-center gap-3 pt-11 w-full md:flex-row md:flex-wrap md:items-start md:justify-center m-auto">
-        <AddTodoModal
-          trigger={
-            <button className="flex items-center justify-center w-[300px] h-[300px] bg-stone-900 rounded-lg opacity-55">
-              <PlusIcon className="h-[70px] w-[70px] text-stone-950" />
-            </button>
-          }
-        />
-        {todos.map((todo) => (
-          <Todo todo={todo} key={todo._id} />
-        ))}
+      <div className="grid grid-cols-1 gap-y-5 self-center md:grid-cols-2 md:gap-x-5 lg:grid-cols-3 lg:gap-x-6">
+        <AddToDoButton onClick={openModal} />
+        {hasTodos && toDoList.map((todo) => <Todo todo={todo} key={todo._id} />)}
       </div>
-    </div>
+      {!hasTodos && (
+        <div className="flex flex-col h-80 items-center justify-center gap-4">
+          <Frown className="w-10 h-10" />
+          <h1 className="text-3xl font-bold">You don't have any tasks now</h1>
+          <Button variant="default" className="flex items-center gap-2" onClick={openModal}>
+            <PlusIcon className="w-4 h-4" />
+            Add new To Do
+          </Button>
+        </div>
+      )}
+      {isOpen && <AddTodoModal />}
+      {isEditOpen && <EditTodoModal />}
+      {isDeleteOpen && <DeleteModal />}
+      {isMoreInfoOpen && <MoreInfoModal />}
+    </>
   );
 }
 

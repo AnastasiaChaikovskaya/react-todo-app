@@ -7,10 +7,11 @@ export interface ITodo {
   updatedAt: string;
 }
 
+export type TUpdateTodoRequestData = Required<Pick<ITodo, '_id'>> &
+  Partial<Omit<ITodo, '_id' | 'createdAt' | 'updatedAt'>>;
+
 export interface ITodosResponse {
   id: number;
   username: string;
   todos: ITodo[];
 }
-
-export type TUpdateTodoRequestData = Omit<ITodo, 'createdAt' | 'updatedAt'>;

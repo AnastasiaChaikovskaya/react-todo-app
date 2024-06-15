@@ -3,17 +3,19 @@ import { AUTH_ENDPOINTS, USER_ENDPOINTS } from '@/constants';
 import { ILoginResponse, IRegisterResponse } from '@/types/AuthResponse';
 import { User } from '@/types/User';
 
+export type TRegisterRequestData = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+};
+
 export const login = async (requestData: { email: string; password: string }) => {
   const response = await axiosInstance.post<ILoginResponse>(AUTH_ENDPOINTS.LOGIN, requestData);
   return response.data;
 };
 
-export const register = async (requestData: {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-}) => {
+export const register = async (requestData: TRegisterRequestData) => {
   const response = await axiosInstance.post<IRegisterResponse>(AUTH_ENDPOINTS.REGISTER, requestData);
   return response.data;
 };

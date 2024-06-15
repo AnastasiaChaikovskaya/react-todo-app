@@ -1,9 +1,11 @@
 import { useToast } from '@/components/ui/use-toast';
 import { AUTH_QUERY_KEYS } from '@/constants/query-keys';
 import { MAIN_ROUTS } from '@/constants/routs';
-import { login, register } from '@/servises/auth';
+import { TRegisterRequestData, login, register } from '@/servises/auth';
 import useUserStore from '@/store/UserStore';
+import { IRegisterResponse } from '@/types/AuthResponse';
 import { useMutation } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 export const useLoginMutation = () => {
@@ -37,7 +39,7 @@ export const useRegisterMutation = () => {
 
   const setAuth = useUserStore((state) => state.setAuth);
 
-  return useMutation({
+  return useMutation<IRegisterResponse, AxiosError<{ error: string; status: number }>, TRegisterRequestData>({
     mutationKey: [AUTH_QUERY_KEYS.REGISTER],
     mutationFn: register,
     onSuccess: (responseData) => {
@@ -49,7 +51,15 @@ export const useRegisterMutation = () => {
         description: 'Now login with your credentials',
       });
     },
-    onError: () => {
+    onError: ({ response }) => {
+      if (response?.data.error) {
+        toast({
+          title: 'Register failed',
+          description: response.data.error,
+        });
+        return;
+      }
+
       toast({
         title: 'Register failed',
         description: 'Unable to register with provided credentials',

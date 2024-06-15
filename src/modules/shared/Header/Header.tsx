@@ -5,7 +5,6 @@ import useUserStore from '@/store/UserStore';
 
 const Header = () => {
   const user = useUserStore((state) => state.user);
-  console.log(user);
   return (
     <>
       <div className="flex justify-center items-center px-4 lg:max-w-[1024px] lg:mx-auto">
