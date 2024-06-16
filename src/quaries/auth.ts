@@ -38,14 +38,10 @@ export const useRegisterMutation = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  const setAuth = useUserStore((state) => state.setAuth);
-
   return useMutation<IRegisterResponse, AxiosError<{ error: string; status: number }>, TRegisterRequestData>({
     mutationKey: [AUTH_QUERY_KEYS.REGISTER],
     mutationFn: register,
-    onSuccess: (responseData) => {
-      localStorage.setItem('token', responseData.accessToken);
-      setAuth(true);
+    onSuccess: () => {
       navigate(MAIN_ROUTS.LOGIN);
       toast({
         title: 'Register success',
