@@ -2,6 +2,7 @@ import { axiosInstance } from '@/api/api';
 import { AUTH_ENDPOINTS, USER_ENDPOINTS } from '@/constants';
 import { ILoginResponse, IRegisterResponse, IUpdatePasswordRequest } from '@/types/AuthResponse';
 import { User } from '@/types/User';
+import axios from 'axios';
 
 export type TRegisterRequestData = {
   firstName: string;
@@ -26,7 +27,7 @@ export const register = async (requestData: TRegisterRequestData) => {
 };
 
 export const refreshToken = async (requesrData: { refreshToken: string }): Promise<TRefreshResponse> => {
-  const response = await axiosInstance.post(AUTH_ENDPOINTS.REFRESH, requesrData);
+  const response = await axios.post(AUTH_ENDPOINTS.REFRESH, requesrData);
   return response.data;
 };
 
