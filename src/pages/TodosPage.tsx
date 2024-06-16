@@ -42,6 +42,9 @@ function TodosPage() {
           </Button>
         </div>
         {isOpen && <AddTodoModal />}
+        {isEditOpen && <EditTodoModal />}
+        {isDeleteOpen && <DeleteModal />}
+        {isMoreInfoOpen && <MoreInfoModal />}
       </>
     );
   }
