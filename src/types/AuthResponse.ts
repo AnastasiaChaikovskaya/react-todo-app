@@ -10,3 +10,8 @@ export interface IRegisterResponse {
   accessToken: string;
   refreshToken: string;
 }
+
+export interface IUpdatePasswordRequest {
+  password: string;
+  newPassword: string;
+}

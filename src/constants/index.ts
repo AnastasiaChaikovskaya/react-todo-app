@@ -1,5 +1,6 @@
 export const USER_ENDPOINTS = {
   GET_CURRENT_USER: '/me',
+  UPDATE_PASSWORD: '/update-password',
 } as const;
 
 export const TODO_ENDPOINTS = {
@@ -13,4 +14,5 @@ export const TODO_ENDPOINTS = {
 export const AUTH_ENDPOINTS = {
   LOGIN: '/sign-in',
   REGISTER: '/sign-up',
+  REFRESH: '/refresh',
 } as const;

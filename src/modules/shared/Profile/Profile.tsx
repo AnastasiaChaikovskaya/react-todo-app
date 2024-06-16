@@ -1,5 +1,5 @@
 import { User } from '@/types/User';
-import React, { FC } from 'react';
+import { FC } from 'react';
 import ProfileDropDown from './ProfileDropDown';
 
 interface IProfile {

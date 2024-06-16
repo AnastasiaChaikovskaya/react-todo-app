@@ -1,4 +1,3 @@
-import React from 'react';
 import { NotebookIcon } from 'lucide-react';
 import Profile from '@/modules/shared/Profile/Profile';
 import useUserStore from '@/store/UserStore';

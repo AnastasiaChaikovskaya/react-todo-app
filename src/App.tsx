@@ -7,6 +7,7 @@ import TodosPage from './pages/TodosPage';
 import AuthLayout from './modules/shared/AuthLayout';
 import { useMe } from './hooks/useMe';
 import { Loader } from 'lucide-react';
+import ProfilePage from './pages/ProfilePage';
 
 const routs = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ const routs = createBrowserRouter([
       {
         path: MAIN_ROUTS.TODOS,
         element: <TodosPage />,
+      },
+      {
+        path: MAIN_ROUTS.PROFILE,
+        element: <ProfilePage />,
       },
     ],
   },

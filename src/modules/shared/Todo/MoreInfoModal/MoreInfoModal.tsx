@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useTodo } from '@/hooks/useTodo';
 import useTodosStore from '@/store/TodosStore';
 import {
@@ -66,7 +66,9 @@ const MoreInfoModal = () => {
             ))}
           </div>
         )}
-        {data && !isLoading && <DialogDescription>{data.description}</DialogDescription>}
+        {data && !isLoading && (
+          <DialogDescription className="max-h-[500px] overflow-y-auto">{data.description}</DialogDescription>
+        )}
         <Separator className="bg-stone-300 h-[1px]" />
         {isLoading && !data && (
           <div className="flex items-end justify-between">

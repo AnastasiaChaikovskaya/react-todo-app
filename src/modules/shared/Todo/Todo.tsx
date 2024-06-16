@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { ITodo } from '@/types/Todo';
 import { cn } from '@/lib/utils';
@@ -15,7 +15,7 @@ const Todo: FC<ITodoProps> = ({ todo }) => {
   return (
     <Card className="flex flex-col max-w-[300px] min-h-[300px] min-w-[300px] max-h[300px] overflow-hidden shadow-md bg-stone-100">
       <CardHeader className="flex flex-row items-center justify-between bg-stone-900 rounded-t-lg">
-        <div className="flex gap-2 items-center">
+        <div className="flex gap-2 items-center max-w-[240px]">
           <ListTodo className="text-stone-100 relative" />
           <h2 className={cn('text-xl text-stone-100 truncate')}>{title}</h2>
         </div>

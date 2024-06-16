@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react';
+import { FC, useCallback } from 'react';
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { TUpdateTodoRequestData } from '@/types/Todo';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -8,13 +8,13 @@ import { EditTodoSchema } from '@/schema';
 import { TEditTodoForm } from '@/types/EditTodoForm';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { getTodoStatus } from '@/helpers/getTodoStatus';
-import { Checkbox } from '@/components/ui/checkbox';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { useEditTodoMutation } from '@/quaries/edit-todo';
 import useTodosStore from '@/store/TodosStore';
 import { useModal } from '@/hooks/useModal';
 import { Loader } from 'lucide-react';
+import { ITodoStatus } from '@/types/TodoStatus';
 
 const EditTodoModal: FC = () => {
   const { isOpen, toggleModal } = useModal('edit-to-do');
@@ -27,7 +27,7 @@ const EditTodoModal: FC = () => {
     defaultValues: {
       title: storeTodo?.title || '',
       description: storeTodo?.description || '',
-      status: getTodoStatus(storeTodo?.status || 'active'),
+      status: storeTodo?.status,
     },
   });
 
@@ -41,7 +41,7 @@ const EditTodoModal: FC = () => {
     const requestObject: TUpdateTodoRequestData = {
       ...formData,
       _id: storeTodo._id,
-      status: formData.status ? 'completed' : 'active',
+      status: formData.status,
     };
     mutate(requestObject, {
       onSuccess: () => {
@@ -96,12 +96,17 @@ const EditTodoModal: FC = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Status</FormLabel>
-                  <FormControl>
-                    <div className="flex gap-2 items-center">
-                      <Checkbox checked={field.value} onCheckedChange={field.onChange} disabled={isPending} />
-                      <p>{field.value ? 'Done' : 'In process'}</p>
-                    </div>
-                  </FormControl>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder={`${field.value}`}></SelectValue>
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value={ITodoStatus.active}>{'Active'}</SelectItem>
+                      <SelectItem value={ITodoStatus.completed}>{'Completed'}</SelectItem>
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}

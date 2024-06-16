@@ -21,6 +21,7 @@ export const useLoginMutation = () => {
     onSuccess: (responseData) => {
       setUser(responseData.user);
       localStorage.setItem('token', responseData.accessToken);
+      localStorage.setItem('refreshToken', responseData.refreshToken);
       setAuth(true);
       navigate(MAIN_ROUTS.TODOS);
     },

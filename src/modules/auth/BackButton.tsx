@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { NavLink } from 'react-router-dom';
 
 interface IBackButtonProps {

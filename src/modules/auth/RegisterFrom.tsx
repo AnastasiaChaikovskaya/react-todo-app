@@ -1,4 +1,3 @@
-import React from 'react';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { RegisterSchema } from '@/schema/index';
 import { useForm } from 'react-hook-form';

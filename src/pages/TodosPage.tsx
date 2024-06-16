@@ -1,4 +1,3 @@
-import React from 'react';
 import { useTodos } from '@/hooks/useTodos';
 import Todo from '@/modules/shared/Todo/Todo';
 import useTodosStore from '@/store/TodosStore';

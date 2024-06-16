@@ -46,5 +46,12 @@ export const EditTodoSchema = z.object({
   description: z.string().min(1, {
     message: 'title must be at least 1 characters long',
   }),
-  status: z.boolean(),
+  status: z.enum(['active', 'completed']),
+});
+
+export const UpdatePassWordSchema = z.object({
+  password: z.string(),
+  newPassword: z.string().min(6, {
+    message: 'Password must be at least 6 characters long',
+  }),
 });

@@ -1,4 +1,3 @@
-import React from 'react';
 import { MAIN_ROUTS } from '@/constants/routs';
 import useUserStore from '@/store/UserStore';
 import { Navigate, Outlet } from 'react-router-dom';
