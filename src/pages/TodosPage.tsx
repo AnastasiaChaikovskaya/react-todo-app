@@ -1,6 +1,5 @@
 import { useTodos } from '@/hooks/useTodos';
 import Todo from '@/modules/shared/Todo/Todo';
-import useTodosStore from '@/store/TodosStore';
 import { Frown, PlusIcon, SquareCheckBig } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import AddTodoModal from '@/modules/shared/Todo/AddTodoModal';
@@ -17,11 +16,9 @@ function TodosPage() {
   const { isOpen: isDeleteOpen } = useModal('delete-to-do');
   const { isOpen: isMoreInfoOpen } = useModal('more-info');
 
-  const { isLoading } = useTodos();
+  const { isLoading, data } = useTodos();
 
-  const toDoList = useTodosStore((store) => store.todos);
-
-  const hasTodos = toDoList.length > 0;
+  const hasTodos = data && data.length > 0;
 
   return (
     <>
@@ -39,7 +36,7 @@ function TodosPage() {
       {hasTodos && !isLoading && (
         <div className="grid grid-cols-1 gap-y-5 self-center md:grid-cols-2 md:gap-x-5 lg:grid-cols-3 lg:gap-x-6">
           <AddToDoButton onClick={openModal} />
-          {hasTodos && toDoList.map((todo) => <Todo todo={todo} key={todo._id} />)}
+          {hasTodos && data.map((todo) => <Todo todo={todo} key={todo._id} />)}
         </div>
       )}
       {!hasTodos && !isLoading && (
