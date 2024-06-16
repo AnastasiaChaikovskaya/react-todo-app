@@ -11,6 +11,7 @@ export const useLogOut = () => {
 
   const logOut = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('refreshToken');
     resetUserStore();
     navigate(MAIN_ROUTS.LOGIN, { replace: true });
     queryClient.clear();
