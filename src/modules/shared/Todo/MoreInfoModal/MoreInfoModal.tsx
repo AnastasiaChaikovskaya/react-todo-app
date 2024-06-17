@@ -80,7 +80,7 @@ const MoreInfoModal = () => {
           </div>
         )}
         {data && !isLoading && (
-          <DialogFooter className="flex items-end justify-between">
+          <DialogFooter className="flex flex-col-reverse gap-2 md:flex-row">
             <div className="w-full">
               {(isToDoActive || isToDoCompleted) && (
                 <Button
