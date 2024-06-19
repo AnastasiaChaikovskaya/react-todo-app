@@ -19,6 +19,7 @@ export const useUpdatePassword = () => {
       });
     },
     onError: ({ response }) => {
+      console.log(response?.data.error);
       if (response?.data.error) {
         toast({
           variant: 'destructive',
@@ -31,7 +32,7 @@ export const useUpdatePassword = () => {
       toast({
         variant: 'destructive',
         title: 'Register failed',
-        description: 'Unable to register with provided credentials',
+        description: 'Unable to update with invalid password',
       });
     },
   });
