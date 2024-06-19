@@ -74,7 +74,7 @@ const ChangePasswordForm = () => {
           )}
         />
         <Button type="submit" disabled={hasErrors || isPending} className="md:max-w-fit">
-          {isPending && <Loader className="h-4 w-4" />}
+          {isPending && <Loader className="h-4 w-4 animate-spin" />}
           Update
         </Button>
       </form>
