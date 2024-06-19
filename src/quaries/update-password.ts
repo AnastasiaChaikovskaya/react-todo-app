@@ -5,7 +5,6 @@ import { IUpdatePasswordRequest } from '@/types/AuthResponse';
 import { User } from '@/types/User';
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { time } from 'console';
 
 export const useUpdatePassword = () => {
   const { toast } = useToast();
