@@ -51,6 +51,7 @@ export const useRegisterMutation = () => {
     onError: ({ response }) => {
       if (response?.data.error) {
         toast({
+          variant: 'destructive',
           title: 'Register failed',
           description: response.data.error,
         });
@@ -58,6 +59,7 @@ export const useRegisterMutation = () => {
       }
 
       toast({
+        variant: 'destructive',
         title: 'Register failed',
         description: 'Unable to register with provided credentials',
       });
