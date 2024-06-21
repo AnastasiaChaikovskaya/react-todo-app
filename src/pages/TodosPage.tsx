@@ -9,8 +9,13 @@ import EditTodoModal from '@/modules/shared/Todo/EditTodoModal';
 import DeleteModal from '@/modules/shared/Todo/DeleteModal';
 import MoreInfoModal from '@/modules/shared/Todo/MoreInfoModal/MoreInfoModal';
 import { Skeleton } from '@/components/ui/skeleton';
+import PaginationComponent from '@/modules/pagination/PaginationComponent';
+import { useSearchParams } from 'react-router-dom';
+import { DatePickerDemo } from '@/modules/dateInput/dateInput';
 
 function TodosPage() {
+  const [searchParams] = useSearchParams('?page=1&perPage=16');
+
   const { isOpen, openModal } = useModal('add-to-do');
   const { isOpen: isEditOpen } = useModal('edit-to-do');
   const { isOpen: isDeleteOpen } = useModal('delete-to-do');
@@ -19,6 +24,12 @@ function TodosPage() {
   const { isLoading, data } = useTodos();
 
   const hasTodos = data && data.length > 0;
+
+  const perPage = searchParams.get('perPage') ?? 10;
+  const currentPage = searchParams.get('page') ?? 1;
+  const firstItem = (+currentPage - 1) * +perPage;
+  const lastItem = Math.min(+currentPage * +perPage, data?.length || 0);
+  const visibleTodos = data && data.slice(firstItem, lastItem);
 
   return (
     <>
@@ -34,9 +45,12 @@ function TodosPage() {
         </div>
       )}
       {hasTodos && !isLoading && (
-        <div className="grid grid-cols-1 gap-y-5 self-center md:grid-cols-2 md:gap-x-5 lg:grid-cols-3 lg:gap-x-6">
-          <AddToDoButton onClick={openModal} />
-          {hasTodos && data.map((todo) => <Todo todo={todo} key={todo._id} />)}
+        <div className="flex flex-col gap-4">
+          <div className="grid grid-cols-1 gap-y-5 self-center md:grid-cols-2 md:gap-x-5 lg:grid-cols-3 lg:gap-x-6">
+            {+currentPage === 1 && <AddToDoButton onClick={openModal} />}
+            {hasTodos && visibleTodos && visibleTodos.map((todo) => <Todo todo={todo} key={todo._id} />)}
+          </div>
+          {data.length > 11 && <PaginationComponent todos={data} />}
         </div>
       )}
       {!hasTodos && !isLoading && (

@@ -37,6 +37,7 @@ export const AddTodoSchema = z.object({
   description: z.string().min(1, {
     message: 'title must be at least 1 characters long',
   }),
+  dataWhen: z.date(),
 });
 
 export const EditTodoSchema = z.object({

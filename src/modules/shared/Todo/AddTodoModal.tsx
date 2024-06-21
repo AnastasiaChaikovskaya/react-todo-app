@@ -9,8 +9,13 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { useTodoMutation } from '@/quaries/post-todo';
-import { Loader } from 'lucide-react';
+import { CalendarIcon, Loader } from 'lucide-react';
 import { useModal } from '@/hooks/useModal';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { cn } from '@/lib/utils';
+import { format } from 'date-fns';
+import { Calendar } from '@/components/ui/calendar';
+import { ITodo } from '@/types/Todo';
 
 const AddTodoModal: FC = () => {
   const { isOpen, toggleModal } = useModal('add-to-do');
@@ -25,11 +30,17 @@ const AddTodoModal: FC = () => {
   });
 
   const handleSubmit = (formData: TAddTodoForm) => {
-    mutate(formData, {
-      onSuccess: () => {
-        toggleModal(!isOpen);
+    const { title, description, dataWhen } = formData;
+    mutate(
+      { title, description },
+      {
+        onSuccess: (data: ITodo) => {
+          console.log(data);
+          toggleModal(!isOpen);
+          localStorage.setItem(`${data?._id || 0}`, format(dataWhen, 'PPP'));
+        },
       },
-    });
+    );
   };
 
   const hasErrors = Object.keys(form.formState.errors).length !== 0;
@@ -71,6 +82,39 @@ const AddTodoModal: FC = () => {
                     <Textarea {...field} placeholder="Write todo description" disabled={isPending} />
                   </FormControl>
                   <FormMessage className="text-xs font-medium" />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="dataWhen"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>Pick date when you want to do this task</FormLabel>
+                  <Popover modal={true}>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant={'outline'}
+                        className={cn(
+                          'w-[280px] justify-start text-left font-normal',
+                          !field.value && 'text-muted-foreground',
+                        )}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {field.value ? format(field.value, 'PPP') : <span>Pick date</span>}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0">
+                      <Calendar
+                        mode="single"
+                        selected={field.value}
+                        onSelect={field.onChange}
+                        initialFocus
+                        disabled={(date) => date < new Date()}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage />
                 </FormItem>
               )}
             />

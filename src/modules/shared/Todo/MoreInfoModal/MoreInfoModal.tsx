@@ -31,6 +31,10 @@ const MoreInfoModal = () => {
 
   const isToDoActive = useMemo(() => data && data.status === 'active', [data]);
   const isToDoCompleted = useMemo(() => data && data.status === 'completed', [data]);
+  const keysInLocal = localStorage.getItem(`${data?._id}`);
+
+  console.log(data?._id);
+  console.log(keysInLocal);
 
   const handleUpdateTodoStatus = useCallback(() => {
     if (!data?._id) return;
@@ -80,7 +84,7 @@ const MoreInfoModal = () => {
           </div>
         )}
         {data && !isLoading && (
-          <DialogFooter className="flex flex-col-reverse gap-2 md:flex-row">
+          <DialogFooter className="flex flex-col-reverse items-center gap-2 md:flex-row">
             <div className="w-full">
               {(isToDoActive || isToDoCompleted) && (
                 <Button
@@ -100,6 +104,9 @@ const MoreInfoModal = () => {
               )}
             </div>
             <div className="flex flex-col items-start gap-1 shrink-0">
+              <div className="flex items-center gap-1 text-stone-400">
+                <span className="text-[12px]">To do at: {keysInLocal}</span>
+              </div>
               <div className="flex items-center gap-1 text-stone-400">
                 <span className="text-[12px]">Create At: {reformatDate(data.createdAt)}</span>
               </div>
