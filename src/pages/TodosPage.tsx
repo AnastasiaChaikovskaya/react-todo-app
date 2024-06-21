@@ -11,7 +11,6 @@ import MoreInfoModal from '@/modules/shared/Todo/MoreInfoModal/MoreInfoModal';
 import { Skeleton } from '@/components/ui/skeleton';
 import PaginationComponent from '@/modules/pagination/PaginationComponent';
 import { useSearchParams } from 'react-router-dom';
-import { DatePickerDemo } from '@/modules/dateInput/dateInput';
 
 function TodosPage() {
   const [searchParams] = useSearchParams('?page=1&perPage=16');
