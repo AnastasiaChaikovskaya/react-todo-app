@@ -3,7 +3,7 @@ import { QueryClient } from '@tanstack/react-query';
 import { useRefreshToken } from '@/quaries/refresh';
 
 export const axiosInstance = axios.create({
-  baseURL: 'https://todo-3sid.onrender.com/api/v1',
+  baseURL: 'https://todo-u5bl.onrender.com/api/v1',
 });
 
 axiosInstance.interceptors.request.use(
